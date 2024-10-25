@@ -1,10 +1,21 @@
-const http = require('http');
+name: Build
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World\n');
-});
+on:
+  push:
+    branches:
+      - main
 
-server.listen(3000, () => {
-  console.log('Serveur démarré sur le port 3000');
-});
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
